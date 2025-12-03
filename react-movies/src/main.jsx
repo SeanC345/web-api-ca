@@ -23,6 +23,7 @@ import PersonPage from "./pages/personPage";
 import MustWatchPage from "./pages/mustWatchPage";
 import SignupPage from "./pages/signupPage";
 import LoginPage from "./pages/loginPage";
+import AuthContextProvider from "./contexts/authContext";
 
 
 
@@ -46,6 +47,7 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
       <BrowserRouter>
+        <AuthContextProvider>
         <SiteHeader />
         <MoviesContextProvider>
         <Routes>
@@ -68,6 +70,7 @@ const App = () => {
           <Route path="*" element={ <Navigate to="/" /> } />
         </Routes>
         </MoviesContextProvider>
+        </AuthContextProvider>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />
       </ThemeProvider>
