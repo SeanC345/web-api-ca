@@ -24,6 +24,7 @@ import MustWatchPage from "./pages/mustWatchPage";
 import SignupPage from "./pages/signupPage";
 import LoginPage from "./pages/loginPage";
 import AuthContextProvider from "./contexts/authContext";
+import ProtectedRoute from "./components/protectedRoute";
 
 
 
@@ -51,10 +52,24 @@ const App = () => {
         <SiteHeader />
         <MoviesContextProvider>
         <Routes>
-          <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
+          <Route 
+                  path="/movies/favorites" 
+                  element={
+                    <ProtectedRoute>
+                      <FavoriteMoviesPage />
+                    </ProtectedRoute>
+                  } 
+                />
           <Route path="/reviews/:id" element={ <MovieReviewPage /> } />
           <Route path="/movies/:id" element={<MoviePage />} />
-          <Route path="/reviews/form" element={ <AddMovieReviewPage /> } />
+          <Route 
+                  path="/reviews/form" 
+                  element={
+                    <ProtectedRoute>
+                      <AddMovieReviewPage />
+                    </ProtectedRoute>
+                  } 
+                />
           <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
           <Route path="/movies/trending/today" element={<TrendingPage />} />
           <Route path="/movies/popular" element={<PopularMovies />} />
@@ -63,7 +78,14 @@ const App = () => {
           <Route path="/movies/:id/recommendations" element={<RecommendationsPage />} />
           <Route path="/movies/:id/similar" element={<SimilarMoviesPage />} />
           <Route path="/person/:id" element={<PersonPage />} />
-          <Route path="/movies/must-watch" element={<MustWatchPage />} />
+          <Route 
+                  path="/movies/must-watch" 
+                  element={
+                    <ProtectedRoute>
+                      <MustWatchPage />
+                    </ProtectedRoute>
+                  } 
+                />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<HomePage />} />
