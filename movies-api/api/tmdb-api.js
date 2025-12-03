@@ -25,16 +25,16 @@ export const getMovie = async (id) => {
 };
 
 export const getGenres = async () => {
-    const response = await fetch(
-        `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.TMDB_KEY}&language=en-US`
-    );
+  const response = await fetch(
+    `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.TMDB_KEY}&language=en-US`
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch genres");
+  }
 
-    if (!response.ok) {
-        throw new Error((await response.json()).status_message || "Something went wrong");
-    }
-
-    return await response.json();
+  return await response.json();
 };
+
 
 export const getMovieImages = async (id) => {
     const response = await fetch(

@@ -23,7 +23,7 @@ import PersonPage from "./pages/personPage";
 import MustWatchPage from "./pages/mustWatchPage";
 import SignupPage from "./pages/signupPage";
 import LoginPage from "./pages/loginPage";
-import AuthContextProvider from "./contexts/authContext";
+import AuthContextProvider from "./contexts/authContext.jsx";
 import ProtectedRoute from "./components/protectedRoute";
 
 

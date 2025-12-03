@@ -99,26 +99,29 @@ const SiteHeader = () => {
                   </MenuItem>
                 ))}
 
-                {!user && (
-                  <>
-                    <MenuItem onClick={() => handleMenuSelect("/login")}>
-                      Login
-                    </MenuItem>
-                    <MenuItem onClick={() => handleMenuSelect("/signup")}>
-                      Signup
-                    </MenuItem>
-                  </>
-                )}
-                {user && (
-                  <MenuItem
-                    onClick={() => {
-                      logout();
-                      setAnchorEl(null);
-                    }}
-                  >
-                    Logout ({user})
-                  </MenuItem>
-                )}
+                {!user && [
+                <MenuItem key="login" onClick={() => handleMenuSelect("/login")}>
+                Login
+               </MenuItem>,
+               <MenuItem key="signup" onClick={() => handleMenuSelect("/signup")}>
+               Signup
+              </MenuItem>
+               ]}
+
+
+               {user && [
+                <MenuItem
+                key="logout"
+                onClick={() => {
+                logout();
+                setAnchorEl(null);
+                }}
+                >
+                Logout ({user})
+                </MenuItem>
+               ]}
+
+
               </Menu>
             </>
           ) : (

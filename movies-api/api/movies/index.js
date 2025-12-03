@@ -23,6 +23,11 @@ router.get('/discover', asyncHandler(async (req, res) => {
     res.status(200).json(discoverMovies);
 }));
 
+router.get('/genres', asyncHandler(async (req, res) => {
+  const data = await getGenres();
+  res.status(200).json(data);
+}));
+
 router.get('/:id', asyncHandler(async (req, res) => {
   const data = await getMovie(req.params.id);
   res.status(200).json(data);
@@ -78,10 +83,6 @@ router.get('/:id/credits', asyncHandler(async (req, res) => {
   res.status(200).json(data);
 }));
 
-router.get('/genres', asyncHandler(async (req, res) => {
-  const data = await getGenres();
-  res.status(200).json(data);
-}));
 
 
 export default router;
