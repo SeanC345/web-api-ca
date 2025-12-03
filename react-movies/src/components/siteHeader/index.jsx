@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { styled } from '@mui/material/styles';
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { AuthContext } from "../../contexts/authContext";
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
@@ -22,6 +23,8 @@ const SiteHeader = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   
   const navigate = useNavigate();
+
+  const { user, logout } = useContext(AuthContext);
 
   const menuOptions = [
     { label: "Home", path: "/" },
@@ -95,6 +98,27 @@ const SiteHeader = () => {
                     {opt.label}
                   </MenuItem>
                 ))}
+
+                {!user && (
+                  <>
+                    <MenuItem onClick={() => handleMenuSelect("/login")}>
+                      Login
+                    </MenuItem>
+                    <MenuItem onClick={() => handleMenuSelect("/signup")}>
+                      Signup
+                    </MenuItem>
+                  </>
+                )}
+                {user && (
+                  <MenuItem
+                    onClick={() => {
+                      logout();
+                      setAnchorEl(null);
+                    }}
+                  >
+                    Logout ({user})
+                  </MenuItem>
+                )}
               </Menu>
             </>
           ) : (
@@ -109,6 +133,37 @@ const SiteHeader = () => {
                   {opt.label}
                 </Button>
               ))}
+               {!user && (
+                <>
+                  <Button
+                    sx={{ color: "text.primary", fontWeight: 500 }}
+                    onClick={() => navigate("/login")}
+                  >
+                    Login
+                  </Button>
+
+                  <Button
+                    sx={{ color: "text.primary", fontWeight: 500 }}
+                    onClick={() => navigate("/signup")}
+                  >
+                    Signup
+                  </Button>
+                </>
+              )}
+              {user && (
+                <>
+                  <Typography sx={{ color: "text.primary", mx: 2 }}>
+                    Welcome, {user}
+                  </Typography>
+
+                  <Button
+                    sx={{ color: "text.primary", fontWeight: 500 }}
+                    onClick={logout}
+                  >
+                    Logout
+                  </Button>
+                </>
+              )}
             </>
           )}
         </Toolbar>
