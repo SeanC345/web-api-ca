@@ -1,54 +1,65 @@
 import { add } from "lodash";
 import React, { useState } from "react";
+import { useQuery } from "react-query";
+import { useMutation } from "react-query";
+import { useQueryClient } from "react-query";
+import { getUserFavourites } from "../api/tmdb-api";
+import { addFavourite } from "../api/tmdb-api";
+import { removeFavourite } from "../api/tmdb-api";
 
 export const MoviesContext = React.createContext(null);
 
 const MoviesContextProvider = (props) => {
-  const [favorites, setFavorites] = useState( [] );
-    const [myReviews, setMyReviews] = useState( {} ) ;
-    const [mustWatch, setMustWatch] = useState([]);
+    const queryClient = useQueryClient();
 
 
-  const addToFavorites = (movie) => {
-    let newFavorites = [];
-    if (!favorites.includes(movie.id)){
-      newFavorites = [...favorites, movie.id];
-    }
-    else{
-      newFavorites = [...favorites];
-    }
-    setFavorites(newFavorites)
+const { data: favorites = [],  } = useQuery({
+      queryKey: ["favourites"],
+      queryFn: getUserFavourites,
+      enabled: !!localStorage.getItem("token"),
+    });
+
+const addMutation = useMutation({
+  mutationFn: (movieId) => addFavourite(movieId),
+  onSuccess: () => { queryClient.invalidateQueries("favourites"); },
+});
+
+const removeMutation = useMutation({
+  mutationFn: (movieId) => removeFavourite(movieId),
+  onSuccess: () => { queryClient.invalidateQueries("favourites"); },
+});
+
+const addToFavourites = (movieId) => {
+    addMutation.mutate(movieId);
   };
 
-    const addReview = (movie, review) => {
-    setMyReviews( {...myReviews, [movie.id]: review } )
-  };
-  //console.log(myReviews);
-
-  
-  // We will use this function in the next step
-  const removeFromFavorites = (movie) => {
-    setFavorites( favorites.filter(
-      (mId) => mId !== movie.id
-    ) )
+const removeFromFavourites = (movieId) => {
+    removeMutation.mutate(movieId);
   };
 
+const [myReviews, setMyReviews] = useState({});
+const addReview = (movie, review) => {
+  setMyReviews( {...myReviews, [movie.id]: review } )
+};
+
+const [mustWatch, setMustWatch] = useState([]);
 const addToMustWatch = (movie) => {
-    setMustWatch((prev) => (prev.includes(movie.id) ? prev : [...prev, movie.id]));
-    console.log("Must Watch:", [...new Set([...mustWatch, movie.id])]); // confirm
-  };
+  setMustWatch((prev) =>
+    prev.includes(movie.id) ? prev : [...prev, movie.id]
+  );
+};
 
 const removeFromMustWatch = (movie) => {
-    setMustWatch((prev) => prev.filter((id) => id !== movie.id));
-    console.log("Must Watch:", mustWatch.filter((id) => id !== movie.id)); // confirm
+  setMustWatch((prev) => prev.filter((mId) => mId !== movie.id));
 };
 
    return (
     <MoviesContext.Provider
       value={{
         favorites,
-        addToFavorites,
-        removeFromFavorites,
+        addToFavourites,
+        removeFromFavourites,
+        myReviews,
         addReview,
         mustWatch,
         addToMustWatch,
