@@ -5,6 +5,7 @@ import cors from 'cors';
 import usersRouter from './api/users';
 import authenticate from './api/authenticate/index.js';
 import moviesRouter from './api/movies'; 
+import favouritesRouter from './api/favourites/index.js';
 
 
 
@@ -33,6 +34,10 @@ app.use(express.json());
 app.use('/api/movies', moviesRouter);
 
 app.use('/api/users', usersRouter);
+
+app.use('/api/authenticate', authenticate);
+
+app.use('/api/favourites', favouritesRouter);
 
 app.use(errHandler);
 
