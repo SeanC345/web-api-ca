@@ -10,7 +10,7 @@ import Snackbar from "@mui/material/Snackbar";
 
 
 const FavoriteMoviesPage = () => {
-  const {favourites } = useContext(MoviesContext);
+  const {favorites } = useContext(MoviesContext);
 
   const [openSnack, setOpenSnack] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
@@ -26,7 +26,7 @@ const FavoriteMoviesPage = () => {
 
   // Create an array of queries and run in parallel.
   const favoriteMovieQueries = useQueries({
-    queries: favourites.map((fav) => {
+    queries: favorites.map((fav) => {
       return {
         queryKey: ['movie', { id: fav.movieId }],
         queryFn: getMovie,
@@ -46,7 +46,6 @@ const FavoriteMoviesPage = () => {
     return q.data
   });
 
-  const toDo = () => true;
 
     return (
       <>

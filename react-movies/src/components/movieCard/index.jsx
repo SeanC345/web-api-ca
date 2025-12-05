@@ -1,4 +1,4 @@
-import React, { useContext  } from "react";
+import React, { useContext } from "react";
 import { MoviesContext } from "../../contexts/moviesContext";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -10,33 +10,25 @@ import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
-import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
+import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 import Grid from "@mui/material/Grid";
-import img from '../../images/film-poster-placeholder.png'
+import img from "../../images/film-poster-placeholder.png";
 import { Link } from "react-router-dom";
-import Avatar from '@mui/material/Avatar';
-
+import Avatar from "@mui/material/Avatar";
 
 export default function MovieCard({ movie, action }) {
-      const { favorites, addToFavorites, mustWatch = [] } = useContext(MoviesContext);
-  
+  const { favorites = [], addToFavorites, mustWatch = [] } = useContext(MoviesContext);
 
+  const isFavorite = favorites.some((f) => f.movieId === movie.id);
 
-  if (favorites.find((id) => id === movie.id)) {
-    movie.favorite = true;
-  } else {
-    movie.favorite = false
-  }
+  movie.favorite = isFavorite;
 
   const inPlaylist = mustWatch.includes(movie.id);
 
   const handleAddToFavorite = (e) => {
     e.preventDefault();
-    addToFavorites(movie);
+    addToFavorites(movie.id);
   };
-
-
-
 
   return (
     <Card
@@ -51,35 +43,34 @@ export default function MovieCard({ movie, action }) {
     >
       <CardHeader
         avatar={
-        movie.favorite ? (
-        <Avatar sx={{ backgroundColor: 'red' }}>
-        <FavoriteIcon />
-        </Avatar>
-        ) : null
+          movie.favorite ? (
+            <Avatar sx={{ backgroundColor: "red" }}>
+              <FavoriteIcon />
+            </Avatar>
+          ) : null
         }
-        action={
-          inPlaylist ? <PlaylistAddCheckIcon color="success"/> : null
-        }
+        action={inPlaylist ? <PlaylistAddCheckIcon color="success" /> : null}
         title={
-        <Typography variant="h5" component="p">
-        {movie.title}{" "}
-        </Typography>
+          <Typography variant="h5" component="p">
+            {movie.title}{" "}
+          </Typography>
         }
       />
 
       <CardMedia
-        sx={{ 
+        sx={{
           height: 500,
           borderTopLeftRadius: 12,
           borderTopRightRadius: 12,
-          objectFit: "cover"
-         }}
+          objectFit: "cover",
+        }}
         image={
           movie.poster_path
             ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
             : img
         }
       />
+
       <CardContent sx={{ flexGrow: 1 }}>
         <Grid container>
           <Grid item xs={6}>
@@ -94,6 +85,7 @@ export default function MovieCard({ movie, action }) {
           </Grid>
         </Grid>
       </CardContent>
+
       <CardActions
         disableSpacing
         sx={{
@@ -103,16 +95,17 @@ export default function MovieCard({ movie, action }) {
           paddingBottom: 2,
         }}
       >
+
         {action(movie)}
-      
+
         <Link to={`/movies/${movie.id}`}>
           <Button variant="outlined" size="medium" color="primary">
             More Info ...
           </Button>
         </Link>
-        
       </CardActions>
     </Card>
   );
 }
+
 

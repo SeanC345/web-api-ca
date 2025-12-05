@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const AuthContext = createContext(null);
 
@@ -6,6 +7,8 @@ const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(localStorage.getItem("user"));
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [error, setError] = useState(null);
+
+  const queryClient = useQueryClient();
 
   const login = async (username, password) => {
     setError(null);
@@ -28,6 +31,7 @@ const AuthContextProvider = ({ children }) => {
 
     setUser(username);
     setToken(data.token);
+    queryClient.invalidateQueries(["favorites"]);
   };
 
   const signup = async (username, password) => {
@@ -55,6 +59,7 @@ const AuthContextProvider = ({ children }) => {
     localStorage.removeItem("token");
     setUser(null);
     setToken(null);
+    queryClient.removeQueries(["favorites"]);
   };
 
   return (

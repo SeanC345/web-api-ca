@@ -33,6 +33,7 @@ const LoginPage = () => {
     try {
       await login(username, password);
       navigate("/");
+      window.location.reload();
     } catch (err) {
       setError(err.message);
     }

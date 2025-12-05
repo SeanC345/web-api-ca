@@ -1,11 +1,11 @@
 import { add } from "lodash";
 import React, { useState } from "react";
-import { useQuery } from "react-query";
-import { useMutation } from "react-query";
-import { useQueryClient } from "react-query";
-import { getUserFavourites } from "../api/tmdb-api";
-import { addFavourite } from "../api/tmdb-api";
-import { removeFavourite } from "../api/tmdb-api";
+import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
+import { getUserFavorites } from "../api/tmdb-api";
+import { addFavorite } from "../api/tmdb-api";
+import { removeFavorite } from "../api/tmdb-api";
 
 export const MoviesContext = React.createContext(null);
 
@@ -14,26 +14,26 @@ const MoviesContextProvider = (props) => {
 
 
 const { data: favorites = [],  } = useQuery({
-      queryKey: ["favourites"],
-      queryFn: getUserFavourites,
+      queryKey: ["favorites"],
+      queryFn: getUserFavorites,
       enabled: !!localStorage.getItem("token"),
     });
 
 const addMutation = useMutation({
-  mutationFn: (movieId) => addFavourite(movieId),
-  onSuccess: () => { queryClient.invalidateQueries("favourites"); },
+  mutationFn: (movieId) => addFavorite(movieId),
+  onSuccess: () => { queryClient.invalidateQueries("favorites"); },
 });
 
 const removeMutation = useMutation({
-  mutationFn: (movieId) => removeFavourite(movieId),
-  onSuccess: () => { queryClient.invalidateQueries("favourites"); },
+  mutationFn: (movieId) => removeFavorite(movieId),
+  onSuccess: () => { queryClient.invalidateQueries("favorites"); },
 });
 
-const addToFavourites = (movieId) => {
+const addToFavorites = (movieId) => {
     addMutation.mutate(movieId);
   };
 
-const removeFromFavourites = (movieId) => {
+const removeFromFavorites = (movieId) => {
     removeMutation.mutate(movieId);
   };
 
@@ -57,8 +57,8 @@ const removeFromMustWatch = (movie) => {
     <MoviesContext.Provider
       value={{
         favorites,
-        addToFavourites,
-        removeFromFavourites,
+        addToFavorites,
+        removeFromFavorites,
         myReviews,
         addReview,
         mustWatch,

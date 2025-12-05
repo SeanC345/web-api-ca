@@ -113,7 +113,7 @@ const SiteHeader = () => {
                 <MenuItem
                 key="logout"
                 onClick={() => {
-                logout();
+                logout(navigate);
                 setAnchorEl(null);
                 }}
                 >
@@ -161,7 +161,11 @@ const SiteHeader = () => {
 
                   <Button
                     sx={{ color: "text.primary", fontWeight: 500 }}
-                    onClick={logout}
+                    onClick={() => {
+                      logout();
+                      navigate("/");
+                      window.location.reload();
+                    }}
                   >
                     Logout
                   </Button>

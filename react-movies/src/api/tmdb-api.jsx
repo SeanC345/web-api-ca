@@ -224,10 +224,10 @@ export const getPersonMovieCredits = ({ queryKey }) => {
     .catch((error) => { throw error });
 };
 
-// Get user favourites
-export const getUserFavourites = () => {
+// Get user favorites
+export const getUserFavorites = () => {
   return fetch(
-    "http://localhost:8080/api/favourites",
+    "http://localhost:8080/api/favorites",
     {
       headers: {
         Authorization: window.localStorage.getItem("token"),
@@ -237,7 +237,7 @@ export const getUserFavourites = () => {
   .then((response) => {
     if (!response.ok) {
       return response.json().then((error) => {
-        throw new Error(error.status_message || "Failed to load favourites");
+        throw new Error(error.status_message || "Failed to load favorites");
       });
     }
     return response.json();
@@ -245,10 +245,10 @@ export const getUserFavourites = () => {
   .catch((error) => { throw error });
 };
 
-// Add favourite
-export const addFavourite = (movieId) => {
+// Add favorite
+export const addFavorite = (movieId) => {
   return fetch(
-    "http://localhost:8080/api/favourites",
+    "http://localhost:8080/api/favorites",
     {
       method: "POST",
       headers: {
@@ -261,7 +261,7 @@ export const addFavourite = (movieId) => {
   .then((response) => {
     if (!response.ok) {
       return response.json().then((error) => {
-        throw new Error(error.status_message || "Failed to add favourite");
+        throw new Error(error.status_message || "Failed to add favorite");
       });
     }
     return response.json();
@@ -269,10 +269,10 @@ export const addFavourite = (movieId) => {
   .catch((error) => { throw error });
 };
 
-// Remove favourite
-export const removeFavourite = (movieId) => {
+// Remove favorite
+export const removeFavorite = (movieId) => {
   return fetch(
-    `http://localhost:8080/api/favourites/${movieId}`,
+    `http://localhost:8080/api/favorites/${movieId}`,
     {
       method: "DELETE",
       headers: {
@@ -283,7 +283,7 @@ export const removeFavourite = (movieId) => {
   .then((response) => {
     if (!response.ok) {
       return response.json().then((error) => {
-        throw new Error(error.status_message || "Failed to remove favourite");
+        throw new Error(error.status_message || "Failed to remove favorite");
       });
     }
     return response.json();

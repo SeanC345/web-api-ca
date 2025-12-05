@@ -6,7 +6,7 @@ import Snackbar from "@mui/material/Snackbar";
 import { add } from "lodash";
 
 const AddToFavoritesIcon = ({ movie }) => {
-  const { addToFavourites } = useContext(MoviesContext);
+  const { addToFavorites } = useContext(MoviesContext);
 
   const [openSnack, setOpenSnack] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
@@ -15,11 +15,10 @@ const AddToFavoritesIcon = ({ movie }) => {
     e.preventDefault();
     e.stopPropagation();
 
-    addToFavourites(movie.id);
+    addToFavorites(movie.id);
 
-    setSnackMessage("Added to Favourites");
+    setSnackMessage("Added to Favorites");
     setOpenSnack(true);
-    addToFavourites(movie.id);
   };
 
   const handleClose = () => {
