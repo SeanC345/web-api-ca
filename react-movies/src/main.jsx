@@ -25,6 +25,7 @@ import SignupPage from "./pages/signupPage";
 import LoginPage from "./pages/loginPage";
 import AuthContextProvider from "./contexts/authContext.jsx";
 import ProtectedRoute from "./components/protectedRoute";
+import MyReviewsPage from "./pages/myReviewsPage.jsx";
 
 
 
@@ -78,6 +79,7 @@ const App = () => {
           <Route path="/movies/:id/recommendations" element={<RecommendationsPage />} />
           <Route path="/movies/:id/similar" element={<SimilarMoviesPage />} />
           <Route path="/person/:id" element={<PersonPage />} />
+          <Route path="/my-reviews" element={<MyReviewsPage />} />
           <Route 
                   path="/movies/must-watch" 
                   element={

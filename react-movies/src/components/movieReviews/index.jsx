@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router";
-import { getMovieReviews } from "../../api/tmdb-api";
+import { getMovieReviewsDB } from "../../api/tmdb-api";
 import { excerpt } from "../../util";
 import { useQuery } from "@tanstack/react-query";
 import Spinner from '../spinner'
@@ -15,9 +15,10 @@ import Spinner from '../spinner'
 
 export default function MovieReviews({ movie }) {
     const { data, error, isPending, isError } = useQuery({
-    queryKey: ['reviews', { id: movie.id }],
-    queryFn: getMovieReviews,
+    queryKey: ['dbReviews', movie.id],
+    queryFn: () => getMovieReviewsDB(movie.id),
   });
+
   
   if (isPending) {
     return <Spinner />;
@@ -27,7 +28,7 @@ export default function MovieReviews({ movie }) {
     return <h1>{error.message}</h1>;
   }
   
-  const reviews = data.results;
+  const reviews = data;
 
 
   return (
@@ -42,24 +43,20 @@ export default function MovieReviews({ movie }) {
         </TableHead>
         <TableBody>
           {reviews.map((r) => (
-            <TableRow key={r.id}>
-              <TableCell component="th" scope="row">
-                {r.author}
-              </TableCell>
-              <TableCell >{excerpt(r.content)}</TableCell>
-              <TableCell >
-              <Link
-                  to={`/reviews/${r.id}`}
-                  state={{
-                      review: r,
-                      movie: movie,
-                  }}
+          <TableRow key={r.id}>
+           <TableCell>{r.author}</TableCell>
+           <TableCell>{excerpt(r.review)}</TableCell>
+           <TableCell align="right">
+            <Link
+                  to={`/reviews/${r._id}`}
+                  state={{ review: r, movie: movie }}
                 >
                   Full Review
                 </Link>
-              </TableCell>
-            </TableRow>
-          ))}
+         </TableCell>
+       </TableRow>
+    ))}
+          
         </TableBody>
       </Table>
     </TableContainer>

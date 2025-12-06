@@ -13,6 +13,9 @@ import MovieReviews from "../movieReviews";
 import LanguageIcon from '@mui/icons-material/Language';
 import Button from '@mui/material/Button';
 import Stack from "@mui/material/Stack";
+import WriteReviewForm from "../movieReviews/writeReviewForm";
+import { addReviewDB, getMovieReviewsDB } from "../../api/tmdb-api";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 
 
@@ -28,6 +31,13 @@ const chip = { margin: 0.5 };
 
 const MovieDetails = ({ movie }) => {  
 const [drawerOpen, setDrawerOpen] = useState(false);
+const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+const queryClient = useQueryClient();
+useQuery({
+  queryKey: ["reviewsDB", movie.id],
+  queryFn: () => getMovieReviewsDB(movie.id)
+  });
+
 
 const revenueLabel = 
   movie.revenue !== undefined && movie.revenue !== null
@@ -250,9 +260,24 @@ const revenueLabel =
         Reviews
       </Fab>
       <Drawer anchor="top" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+        <Button
+         variant="contained"
+         sx={{ mb: 2 }}
+         onClick={() => setReviewDialogOpen(true)}
+         >
+         Write Review
+         </Button>
         <MovieReviews movie={movie} />
       </Drawer>
-
+      <WriteReviewForm
+      open={reviewDialogOpen}
+      onClose={() => setReviewDialogOpen(false)}
+      onSubmit={async (review, rating) => {
+         await addReviewDB(movie.id, review, rating);
+         queryClient.invalidateQueries(["reviewsDB", movie.id]);
+         setReviewDialogOpen(false);
+      }}
+      />
       </>
   );
 };

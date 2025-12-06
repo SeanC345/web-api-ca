@@ -14,8 +14,8 @@ router.post(
 
     const newReview = await Review.create({
       userId: req.user._id,
-      movieId,
       author: req.user.username,
+      movieId,
       review,
       rating
     });
