@@ -291,4 +291,59 @@ export const removeFavorite = (movieId) => {
   .catch((error) => { throw error });
 };
 
+// Get reviews for a movie
+export const getMovieReviewsDB = (movieId) => {
+  return fetch(`http://localhost:8080/api/reviews/movie/${movieId}`)
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to load reviews");
+      return res.json();
+    });
+};
 
+// Add a review
+export const addReviewDB = (movieId, review, rating) => {
+  return fetch(`http://localhost:8080/api/reviews`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("token")
+    },
+    body: JSON.stringify({ movieId, review, rating })
+  })
+  .then((res) => {
+    if (!res.ok) throw new Error("Failed to add review");
+    return res.json();
+  });
+};
+
+// Get all reviews by logged-in user
+export const getMyReviews = () => {
+  return fetch(`http://localhost:8080/api/reviews/mine`, {
+    headers: {
+      Authorization: localStorage.getItem("token")
+    }
+  })
+  .then((res) => {
+    if (!res.ok) throw new Error("Failed to load user reviews");
+    return res.json();
+  });
+};
+
+// Delete a review
+export const removeReview = (reviewId) => {
+  return fetch(`http://localhost:8080/api/reviews/${reviewId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  })
+  .then((response) => {
+    if (!response.ok) {
+      return response.json().then((error) => {
+        throw new Error(error.message || "Failed to delete review");
+      });
+    }
+    return response.json();
+  })
+  .catch((error) => { throw error });
+};

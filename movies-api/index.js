@@ -6,6 +6,7 @@ import usersRouter from './api/users';
 import authenticate from './api/authenticate/index.js';
 import moviesRouter from './api/movies'; 
 import favouritesRouter from './api/favorites/index.js';
+import reviewsRouter from './api/reviews/index.js';
 
 
 
@@ -38,6 +39,8 @@ app.use('/api/users', usersRouter);
 app.use('/api/authenticate', authenticate);
 
 app.use('/api/favorites', favouritesRouter);
+
+app.use('/api/reviews', reviewsRouter);
 
 app.use(errHandler);
 
