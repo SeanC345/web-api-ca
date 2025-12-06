@@ -1,17 +1,19 @@
 import React from "react";
-import { useLocation } from "react-router";
-import PageTemplate from "../components/templateMoviePage";
-import MovieReview from "../components/movieReview";
+import Typography from "@mui/material/Typography";
 
-const MovieReviewPage = (props) => {
-  let location = useLocation();
-  const {movie, review} = location.state;
-  
+const MovieReview = ({ review }) => {
   return (
-    <PageTemplate movie={movie}>
-      <MovieReview review={review} />
-    </PageTemplate>
+    <>
+      <Typography variant="h5" component="h3">
+        Review By: {review.author || "Anonymous"}
+      </Typography>
+
+      <Typography variant="h6" component="p">
+        {review.review || review.content}
+      </Typography>
+    </>
   );
 };
 
-export default MovieReviewPage;
+export default MovieReview;
+

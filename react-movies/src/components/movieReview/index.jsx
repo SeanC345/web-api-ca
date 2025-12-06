@@ -9,7 +9,7 @@ const MovieReview =  ({ review }) => {
       </Typography>
 
       <Typography variant="h6" component="p">
-        {review.content} 
+        {review.review || review.content} 
       </Typography>
     </>
   );

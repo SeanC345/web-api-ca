@@ -7,58 +7,82 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router";
-import { getMovieReviewsDB } from "../../api/tmdb-api";
+import { getMovieReviews, getMovieReviewsDB } from "../../api/tmdb-api";
 import { excerpt } from "../../util";
 import { useQuery } from "@tanstack/react-query";
-import Spinner from '../spinner'
-
+import Spinner from "../spinner";
 
 export default function MovieReviews({ movie }) {
-    const { data, error, isPending, isError } = useQuery({
-    queryKey: ['dbReviews', movie.id],
+
+  // TMDB reviews
+  const tmdbQuery = useQuery({
+    queryKey: ["reviews", { id: movie.id }],
+    queryFn: getMovieReviews,
+  });
+
+  // Database reviews
+  const dbQuery = useQuery({
+    queryKey: ["dbReviews", movie.id],
     queryFn: () => getMovieReviewsDB(movie.id),
   });
 
-  
-  if (isPending) {
-    return <Spinner />;
-  }
+  if (tmdbQuery.isPending || dbQuery.isPending) return <Spinner />;
+  if (tmdbQuery.isError) return <h1>{tmdbQuery.error.message}</h1>;
+  if (dbQuery.isError) return <h1>{dbQuery.error.message}</h1>;
 
-  if (isError) {
-    return <h1>{error.message}</h1>;
-  }
-  
-  const reviews = data;
-
+  const tmdbReviews = tmdbQuery.data.results;
+  const dbReviews = dbQuery.data;
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{minWidth: 550}} aria-label="reviews table">
+      <Table sx={{ minWidth: 550 }}>
+
         <TableHead>
           <TableRow>
-            <TableCell >Author</TableCell>
+            <TableCell>Author</TableCell>
             <TableCell align="center">Excerpt</TableCell>
             <TableCell align="right">More</TableCell>
           </TableRow>
         </TableHead>
+
         <TableBody>
-          {reviews.map((r) => (
-          <TableRow key={r.id}>
-           <TableCell>{r.author}</TableCell>
-           <TableCell>{excerpt(r.review)}</TableCell>
-           <TableCell align="right">
-            <Link
-                  to={`/reviews/${r._id}`}
-                  state={{ review: r, movie: movie }}
+
+         
+          {tmdbReviews.map((r) => (
+            <TableRow key={r.id}>
+              <TableCell>{r.author}</TableCell>
+              <TableCell>{excerpt(r.content)}</TableCell>
+              <TableCell align="right">
+                <Link
+                  to={`/reviews/${r.id}`}
+                  state={{ review: r, movie }}
                 >
                   Full Review
                 </Link>
-         </TableCell>
-       </TableRow>
-    ))}
+              </TableCell>
+            </TableRow>
+          ))}
+
           
+          {dbReviews.map((r) => (
+            <TableRow key={r._id}>
+              <TableCell>{r.author}</TableCell>
+              <TableCell>{excerpt(r.review)}</TableCell>
+
+              <TableCell align="right">
+                <Link
+                  to={`/reviews/${r._id}`}
+                  state={{ review: r, movie }}
+                >
+                  Full Review
+                </Link>
+              </TableCell>
+            </TableRow>
+          ))}
+
         </TableBody>
       </Table>
     </TableContainer>
   );
 }
+

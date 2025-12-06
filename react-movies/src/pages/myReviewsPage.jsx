@@ -12,20 +12,23 @@ const MyReviewsPage = () => {
   const queryClient = useQueryClient();
 
  
-  const { data: reviews, isPending, isError, error } = useQuery({
+  const { data: reviews = [], isPending, isError, error } = useQuery({
     queryKey: ["myReviews"],
-    queryFn: getMyReviews
+    queryFn: getMyReviews,
   });
 
-  if (isPending) return <Spinner />;
-  if (isError) return <h1>{error.message}</h1>;
-
-  const movieQueries = useQueries({
+ const movieQueries = useQueries({
     queries: reviews.map((r) => ({
       queryKey: ["movie", { id: r.movieId }],
       queryFn: getMovie
     }))
   });
+
+
+  if (isPending) return <Spinner />;
+  if (isError) return <h1>{error.message}</h1>;
+
+  
 
   const loadingMovie = movieQueries.some((mq) => mq.isPending);
   if (loadingMovie) return <Spinner />;

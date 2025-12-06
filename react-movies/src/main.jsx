@@ -79,7 +79,15 @@ const App = () => {
           <Route path="/movies/:id/recommendations" element={<RecommendationsPage />} />
           <Route path="/movies/:id/similar" element={<SimilarMoviesPage />} />
           <Route path="/person/:id" element={<PersonPage />} />
-          <Route path="/my-reviews" element={<MyReviewsPage />} />
+          <Route 
+            path="/my-reviews" 
+            element={
+            <ProtectedRoute>
+               <MyReviewsPage />
+            </ProtectedRoute>
+                    } 
+                  />
+
           <Route 
                   path="/movies/must-watch" 
                   element={
