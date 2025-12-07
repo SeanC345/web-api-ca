@@ -109,16 +109,19 @@ export const getTopRatedMovies = async () => {
 };
 
 export const getTrendingMovies = async () => {
-    const response = await fetch(
-        `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.TMDB_KEY}&language=en-US&page=1`
-    );
+  const response = await fetch(
+    `https://api.themoviedb.org/3/trending/movie/day?api_key=${process.env.TMDB_KEY}&language=en-US`
+  );
 
-    if (!response.ok) {
-        throw new Error((await response.json()).status_message || "Something went wrong");
-    }
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.status_message || "Something went wrong");
+  }
 
-    return await response.json();
+  return await response.json();
 };
+
+
 
 export const getMovieCredits = async (id) => {
     const response = await fetch(

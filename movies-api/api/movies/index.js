@@ -28,28 +28,13 @@ router.get('/genres', asyncHandler(async (req, res) => {
   res.status(200).json(data);
 }));
 
-router.get('/:id', asyncHandler(async (req, res) => {
-  const data = await getMovie(req.params.id);
-  res.status(200).json(data);
-}));
-
-router.get('/:id/images', asyncHandler(async (req, res) => {
-  const data = await getMovieImages(req.params.id);
-  res.status(200).json(data);
-}));
-
-router.get('/:id/reviews', asyncHandler(async (req, res) => {
-  const data = await getMovieReviews(req.params.id);
+router.get('/trending', asyncHandler(async (req, res) => {
+  const data = await getTrendingMovies();
   res.status(200).json(data);
 }));
 
 router.get('/upcoming', asyncHandler(async (req, res) => {
   const data = await getUpcomingMovies();
-  res.status(200).json(data);
-}));
-
-router.get('/trending', asyncHandler(async (req, res) => {
-  const data = await getTrendingMovies();
   res.status(200).json(data);
 }));
 
@@ -65,6 +50,21 @@ router.get('/top_rated', asyncHandler(async (req, res) => {
 
 router.get('/now_playing', asyncHandler(async (req, res) => {
   const data = await getNowPlayingMovies();
+  res.status(200).json(data);
+}));
+
+router.get('/:id', asyncHandler(async (req, res) => {
+  const data = await getMovie(req.params.id);
+  res.status(200).json(data);
+}));
+
+router.get('/:id/images', asyncHandler(async (req, res) => {
+  const data = await getMovieImages(req.params.id);
+  res.status(200).json(data);
+}));
+
+router.get('/:id/reviews', asyncHandler(async (req, res) => {
+  const data = await getMovieReviews(req.params.id);
   res.status(200).json(data);
 }));
 
