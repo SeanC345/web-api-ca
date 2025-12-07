@@ -8,6 +8,7 @@ import { TextField } from "@mui/material";
 import { Button } from "@mui/material";
 import { Typography } from "@mui/material";
 import { Divider } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
   const { signup } = useContext(AuthContext);
@@ -16,6 +17,7 @@ const SignupPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const navigate = useNavigate();
 
   // Strong password regex
   const passwordRegex =
@@ -40,6 +42,7 @@ const SignupPage = () => {
       setError(null);
       setUsername("");
       setPassword("");
+      navigate("/login");
     } catch (err) {
       setError(err.message);
       setSuccess(null);
